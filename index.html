@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Simple Hearing Aid App</title>
+        <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+        <script>
+            var aCtx;
+            var analyser;
+            var microphone;
+            navigator.mediaDevices
+                .getUserMedia({ video: false, audio: true })
+                .then((stream) => {
+                    AudioContenxt =
+                        window.AudioContext || window.webkitAudioContext;
+                    aCtx = new AudioContenxt();
+                    analyser = aCtx.createAnalyser();
+                    microphone = aCtx.createMediaStreamSource(stream);
+                    microphone.connect(analyser);
+                    analyser.connect(aCtx.destination);
+                })
+                .catch((e) => console.log(e.name + ': ' + e.message));
+        </script>
+    </head>
+    <body>
+        <p>I'm the content</p>
+    </body>
+</html>
