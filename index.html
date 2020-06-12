@@ -11,9 +11,9 @@
             navigator.mediaDevices
                 .getUserMedia({ video: false, audio: true })
                 .then((stream) => {
-                    AudioContenxt =
+                    window.AudioContext =
                         window.AudioContext || window.webkitAudioContext;
-                    aCtx = new AudioContenxt();
+                    aCtx = new AudioContext();
                     analyser = aCtx.createAnalyser();
                     microphone = aCtx.createMediaStreamSource(stream);
                     microphone.connect(analyser);
