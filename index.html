@@ -13,14 +13,14 @@
             name="googlebot"
             content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
         />
+        <meta name="theme-color" content="black" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <meta
             name="bingbot"
             content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
         />
-        <meta
-            name="apple-mobile-web-app-title"
-            content="ChatableApps - AI Hearing Aid App"
-        />
+        <meta name="apple-mobile-web-app-title" content="Sentien Hear+" />
         <link
             rel="apple-touch-icon"
             sizes="57x57"
@@ -196,6 +196,30 @@
                 text-align: center;
             }
         </style>
+    </head>
+    <body class="fullscreen">
+        <div class="container">
+            <div class="logo">
+                <img src="./hearplus.svg" alt="" />
+            </div>
+
+            <div id="beforeLoad">
+                <img
+                    src="side.png"
+                    class="side-img"
+                    alt="this is shape of sentien audio headset"
+                />
+                <h2>Put your headset on.</h2>
+                <p>Works best with Sentien Audio.</p>
+                <button onclick="play()" class="bottom btn">Start</button>
+            </div>
+            <div id="afterLoad">
+                <canvas id="output" width="320px" height="320px"></canvas>
+                <button onclick="location.reload()" class="bottom btn">
+                    Stop
+                </button>
+            </div>
+        </div>
         <script src="./mediaPolyfill.js"></script>
         <script src="./wave.js"></script>
         <script>
@@ -266,25 +290,5 @@
                 });
             }
         </script>
-    </head>
-    <body class="fullscreen">
-        <div class="container">
-            <div class="logo">
-                <img src="./hearplus.svg" alt="" />
-            </div>
-
-            <div id="beforeLoad">
-                <img src="side.png" class="side-img" />
-                <h2>Put your headset on.</h2>
-                <p>Works best with Sentien Audio.</p>
-                <button onclick="play()" class="bottom btn">Start</button>
-            </div>
-            <div id="afterLoad">
-                <canvas id="output" width="320px" height="320px"></canvas>
-                <button onclick="location.reload()" class="bottom btn">
-                    Stop
-                </button>
-            </div>
-        </div>
     </body>
 </html>
