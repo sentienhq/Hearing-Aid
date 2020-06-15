@@ -2,27 +2,289 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Simple Hearing Aid App</title>
-        <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+        <title>Sentien Hear+ | Hearing Aid in My Browser.</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <link rel="profile" href="http://gmpg.org/xfn/11" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="robots" content="index, follow" />
+        <meta
+            name="googlebot"
+            content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+        />
+        <meta
+            name="bingbot"
+            content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+        />
+        <meta
+            name="apple-mobile-web-app-title"
+            content="ChatableApps - AI Hearing Aid App"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="57x57"
+            href="/icons/apple-icon-57x57.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="60x60"
+            href="/icons/apple-icon-60x60.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="72x72"
+            href="/icons/apple-icon-72x72.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="76x76"
+            href="/icons/apple-icon-76x76.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="114x114"
+            href="/icons/apple-icon-114x114.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="120x120"
+            href="/icons/apple-icon-120x120.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="144x144"
+            href="/icons/apple-icon-144x144.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="152x152"
+            href="/icons/apple-icon-152x152.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/icons/apple-icon-180x180.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="192x192"
+            href="/icons/android-icon-192x192.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/icons/favicon-32x32.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="96x96"
+            href="/icons/favicon-96x96.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/icons/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="msapplication-TileColor" content="#000000" />
+        <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
+        <meta name="theme-color" content="#000000" />
+        <style>
+            :root {
+                --size-xs: 480px;
+                --size-sm: 600px;
+                --size--md: 840px;
+                --size-lg: 960px;
+                --size-xl: 1280px;
+                --size--2x: 1440px;
+                --c-light-green: #38ffb6;
+                --c-green: #00ffa1;
+                --f-family-primary: 'PT Sans', 'HelveticaNeue-Light',
+                    'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
+                    'Lucida Grande', Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+                    Fira Sans, Droid Sans, sans-serif;
+                --h-view-vh: 100vh;
+                --h-view-perc: 100%;
+            }
+            html,
+            body,
+            .fullscreen {
+                display: flex;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
+
+            body {
+                height: 200px;
+                background-color: black;
+                /* background-image: linear-gradient(#24243e, #267871); */
+            }
+
+            .side-img {
+                opacity: 0.15;
+                width: 220px;
+                margin-bottom: -40px;
+            }
+
+            h1,
+            h2,
+            h3,
+            h4,
+            h5 {
+                font-family: var(--f-family-primary);
+                font-weight: normal;
+                font-style: normal;
+                position: relative;
+                color: white;
+                margin: 0;
+            }
+            p {
+                font-family: var(--f-family-primary);
+                color: white;
+                margin: 0;
+            }
+
+            /* Center the content in the browser window */
+            .container {
+                margin: auto;
+                text-align: center;
+            }
+
+            button {
+                font-weight: bold;
+                font-size: 18px;
+                padding-top: 15px;
+                padding-bottom: 15px;
+                white-space: nowrap;
+                color: #000000;
+                background-color: #00ffa1;
+                border-radius: 40px;
+                padding-left: 45px;
+                padding-right: 45px;
+                display: block;
+                border: 0;
+                outline: none;
+                margin: 0 auto;
+                margin-top: 20px;
+            }
+
+            .logo img {
+                width: 160px;
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translate(-50%, 0);
+            }
+            @media (orientation: portrait), (max-height: 600px) {
+                .bottom {
+                    position: fixed;
+                    bottom: 30px;
+                    left: 50%;
+                    transform: translate(-50%, 0);
+                }
+            }
+            #afterLoad {
+                visibility: hidden;
+                margin: auto;
+                text-align: center;
+            }
+        </style>
+        <script src="./mediaPolyfill.js"></script>
+        <script src="./wave.js"></script>
         <script>
             var aCtx;
             var analyser;
             var microphone;
-            navigator.mediaDevices
-                .getUserMedia({ video: false, audio: true })
-                .then((stream) => {
-                    window.AudioContext =
-                        window.AudioContext || window.webkitAudioContext;
-                    aCtx = new AudioContext();
-                    analyser = aCtx.createAnalyser();
-                    microphone = aCtx.createMediaStreamSource(stream);
-                    microphone.connect(analyser);
-                    analyser.connect(aCtx.destination);
-                })
-                .catch((e) => console.log(e.name + ': ' + e.message));
+            var play = function () {
+                navigator.mediaDevices
+                    .getUserMedia({
+                        video: false,
+                        audio: {
+                            sampleRate: 44000,
+                            volume: 1,
+                            echoCancellation: true,
+                            noiseSuppression: true,
+                            autoGainControl: false,
+                        },
+                    })
+                    .then((stream) => {
+                        var beforeBox = document.getElementById('beforeLoad');
+                        beforeBox.style.display = 'none';
+                        var afterBox = document.getElementById('afterLoad');
+                        afterBox.style.visibility = 'visible';
+                        var wave = new Wave();
+                        window.AudioContext =
+                            window.AudioContext || window.webkitAudioContext;
+                        aCtx = new AudioContext();
+                        analyser = aCtx.createAnalyser();
+                        microphone = aCtx.createMediaStreamSource(stream);
+                        wave.fromStream(stream, 'output', {
+                            flower: true,
+                            colors: [
+                                '#00ffa1',
+                                '#03faa9',
+                                '#07f5b1',
+                                '#0af0b8',
+                                '#0debc0',
+                                '#11e6c8',
+                                '#14e1d0',
+                                '#17dbd8',
+                                '#1bd6e0',
+                                '#1ed1e7',
+                                '#21ccef',
+                                '#25c7f7',
+                                '#28c2ff',
+                                '#25c7f7',
+                                '#21ccef',
+                                '#1ed1e7',
+                                '#1bd6e0',
+                                '#17dbd8',
+                                '#14e1d0',
+                                '#11e6c8',
+                                '#0debc0',
+                                '#0af0b8',
+                                '#07f5b1',
+                                '#03faa9',
+                            ],
+                        });
+                        microphone.connect(analyser);
+                        analyser.connect(aCtx.destination);
+                    })
+                    .catch((e) => alert(e.name + ': ' + e.message));
+            };
+
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('./sw.js').then(function () {
+                    console.log('Service Worker Registered');
+                });
+            }
         </script>
     </head>
-    <body>
-        <p>I'm the content</p>
+    <body class="fullscreen">
+        <div class="container">
+            <div class="logo">
+                <img src="./hearplus.svg" alt="" />
+            </div>
+
+            <div id="beforeLoad">
+                <img src="side.png" class="side-img" />
+                <h2>Put your headset on.</h2>
+                <p>Works best with Sentien Audio.</p>
+                <button onclick="play()" class="bottom btn">Start</button>
+            </div>
+            <div id="afterLoad">
+                <canvas id="output" width="320px" height="320px"></canvas>
+                <button onclick="location.reload()" class="bottom btn">
+                    Stop
+                </button>
+            </div>
+        </div>
     </body>
 </html>
