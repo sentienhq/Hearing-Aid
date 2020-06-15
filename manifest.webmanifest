@@ -39,9 +39,8 @@
 
         {
             "src": "/icons/hearplus1024.png",
-            "sizes": "1024x200",
-            "type": "image/png",
-            "density": "4.0"
+            "sizes": "1024x1024",
+            "type": "image/png"
         }
     ],
     "theme_color": "#000000",
